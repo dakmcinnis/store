@@ -1,7 +1,10 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { Request, Response } from 'express';
-import { getAuthorizationToken } from './utils';
+import * as Utils from './utils';
+import * as StoreUtils from '../features/stores/utils';
+import * as StoreModels from '../features/stores/model';
+import { DocumentSnapshot } from 'firebase-functions/lib/providers/firestore';
 
 /**
  * Logs the request method and url to the firebase-functions.
@@ -19,13 +22,13 @@ export const logging = (request: Request, response: Response, next: any) => {
  * If it has, the request will pass through to the endpoint logic. Otherwise, an
  * unauthorized status will be sent.
  */
-export const authentication = (request: Request, response: Response, next: any) => {
-    const token = getAuthorizationToken(request);
+export const isAuthenticated = (request: Request, response: Response, next: any) => {
+    const token = Utils.getAuthorizationToken(request);
     if (token) {
-        admin.auth().verifyIdToken(token).then((decodedToken) => {
-            const email = decodedToken.email;
+        admin.auth().verifyIdToken(token).then((decodedToken: admin.auth.DecodedIdToken) => {
+            Utils.addUserInfoToResponse(response, decodedToken);
             functions.logger.info(
-                `The user with email ${email} is authenticated for ${request.method} request ${request.originalUrl}.`
+                `${request.method} request ${request.url}: The user with email ${decodedToken.email} is authenticated.`
             );
             next();
         }).catch(() => {
@@ -36,4 +39,42 @@ export const authentication = (request: Request, response: Response, next: any) 
         // authorization header is missing or has invalid format
         response.sendStatus(403);
     }
+};
+
+/**
+ * Verifies that the individual performing the request is authorized.
+ * 
+ * Pre-condition: isAuthenticated has been run, to populate data into `response.locals`.
+ */
+export const isAuthorized = ({ isEmployee }: { isEmployee: boolean }) => (
+    isEmployee ? isAuthorizedEmployee : isAuthorizedPassThrough
+);
+
+const isAuthorizedPassThrough = (request: any, response: Response, next: any) => {
+    next();
+}
+
+const isAuthorizedEmployee = (request: Request, response: Response, next: any) => {
+    const storeId: StoreModels.StoreId = request.params.storeId || '';
+    const { email, isEmployee } = Utils.getUserInfoFromResponse(response);
+    StoreUtils.getStoreRefById(storeId)
+        .get()
+        .then((store: DocumentSnapshot) => {
+            functions.logger.info(store.data(), { structuredData: true });
+            const employeePrivateKey: string = (store.data()?.employeePrivateKey || '') as string;
+            if (isEmployee[storeId] === employeePrivateKey) {
+                functions.logger.info(
+                    `${request.method} request ${request.url}: The user with email ${email} is an employee of ${storeId}.`
+                );
+            } else {
+                functions.logger.info(
+                    `${request.method} request ${request.url}: The user with email ${email} is not an employee of ${storeId}.`
+                );
+                response.sendStatus(403);
+            }
+        })
+        .catch(error => {
+            Utils.handleGeneralError(response, error);
+        });
+    next();
 };
