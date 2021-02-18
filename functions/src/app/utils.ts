@@ -112,21 +112,32 @@ export const handleMissingRessourceError = (response: Response, resourceName: st
 }
 
 /**
- * Handles the response, when any server error occurs.
+ * Handles the logging and response, when any server error occurs.
  * 
  * @param response - The object used to send the response
  * @param error - The error caught, or any information about the error to be logged
  */
 export const handleGeneralError = (response: Response, error?: any): void => {
-    const message = (error && error.code && error.message) ?
-        (
-            `${error.code} - ${error.message}`
-        ) : (error) ?
-            (
-                `${error}`
-            ) : (
-                'Express executed custom error handler, with unknown error.'
-            );
-    functions.logger.error(message);
+    handleGeneralErrorLogging(error);
     response.sendStatus(500);
 }
+
+/**
+ * Handles the logging, when any server error occurs.
+ */
+export const handleGeneralErrorLogging = (error?: string): void => {
+    const message = getGeneralErrorMessage(error);
+    functions.logger.error(message);
+}
+
+const getGeneralErrorMessage = (error?: any) => (
+    (error && error.code && error.message) ? (
+        `${error.code} - ${error.message}`
+    ) : (
+            error && typeof error === 'string' ? (
+                `Error: ${error}`
+            ) : (
+                    'Express executed custom error handler, with unknown error.'
+                )
+        )
+)

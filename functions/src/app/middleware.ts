@@ -56,7 +56,7 @@ const isAuthorizedPassThrough = (request: any, response: Response, next: any) =>
 
 const isAuthorizedEmployee = (request: Request, response: Response, next: any) => {
     const storeId: StoreModels.StoreId = request.params.storeId || '';
-    const { email, isEmployee } = Utils.getUserInfoFromResponse(response);
+    const { email, isEmployee } = { isEmployee: {}, ...Utils.getUserInfoFromResponse(response) };
     StoreUtils.getStoreRefById(storeId)
         .get()
         .then((store: DocumentSnapshot) => {

@@ -12,3 +12,5 @@ try {
 }
 
 export const api = functions.https.onRequest(app);
+
+export * from './features/users/triggers';

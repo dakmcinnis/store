@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
 import * as AppUtils from '../../app/utils';
+import { StoreId } from '../stores/model';
+import { InternalUser, PublicFacingUser } from './model';
 
 /**
  * Signup a user to the Authentication Product.
@@ -29,12 +31,35 @@ export const signup_POST = (request: Request, response: Response) => {
 
 /**
  * Access one's own user object from the Authentication Product. 
+ * 
+ * @param request.query.debug Optional 'debug' parameter as boolean, which allows for employeePrivateKeys to be shown
+ * 
+ * TODO: remove debug parameter.
  */
-export const getUser_GET = (request: Request, response: Response) => {
+export const getUser_GET = (request: Request, response: Response<PublicFacingUser | InternalUser>) => {
+    // eslint-disable-next-line eqeqeq
+    const debug = !!request.query.debug && (request.query.debug == 'true');
     const { email } = AppUtils.getUserInfoFromResponse(response);
     return admin.auth().getUserByEmail(email)
         .then((user: admin.auth.UserRecord) => {
-            response.status(200).send(user);
+            if (debug) {
+                // Show full user object
+                response.status(200).send(user as InternalUser);
+            } else {
+                // Show user object, obscuring the employeePrivateKeys
+                // (i.e. the 'isEmployee' array becomes a map)
+                const { customClaims, ...restOfUser } = user as InternalUser;
+                const { isEmployee, ...restOfCustomClaims } = customClaims;
+                const companyArray: StoreId[] = Object.keys(isEmployee || {});
+                const publicFacingUser: PublicFacingUser = {
+                    ...restOfUser,
+                    customClaims: {
+                        ...restOfCustomClaims,
+                        isEmployee: companyArray,
+                    },
+                }
+                response.status(200).send(publicFacingUser);
+            }
         })
         .catch((error) => {
             AppUtils.handleGeneralError(response, error);

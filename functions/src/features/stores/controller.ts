@@ -59,7 +59,7 @@ export const createStore_POST = async (request: Request, response: Response) => 
         });
 
     // Add the owner as an employee
-    await StoreUtils.addEmployee(uid, isEmployee, storeId, employeePrivateKey);
+    await StoreUtils.addEmployee(uid, isEmployee || {}, storeId, employeePrivateKey);
 
     response.status(200).end();
 };

@@ -1,3 +1,5 @@
+import * as functions from 'firebase-functions';
+
 /**
  * A feature in express.
  * 
@@ -10,3 +12,5 @@ export interface Feature {
     router: any; // Left as 'any', since express does not export the 'Router' interface
     isProtected: boolean;
 }
+
+export type Trigger = functions.CloudFunction<any>;
