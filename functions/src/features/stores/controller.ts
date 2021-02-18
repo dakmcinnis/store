@@ -37,7 +37,7 @@ export const createStore_POST = async (request: Request, response: Response) => 
     // Since it does not exist, create the store
     const employeePrivateKey = StoreUtils.generateRandomString(`${storeName}-${email}-${displayName}`.length);
 
-    const owner = !!displayName ? ({
+    const owner = !displayName ? ({
         name: displayName,
         uid,
         email,

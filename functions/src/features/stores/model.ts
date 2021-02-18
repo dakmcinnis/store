@@ -1,3 +1,6 @@
+import { PRODUCTS_COLLECTION } from './products/model';
+import { TRANSACTIONS_COLLECTION } from './transactions/model';
+
 /**
  * The name of the root-level stores collection.
  */
@@ -39,7 +42,7 @@ export type EmployeeFacingStoreData = Omit<StoreData, 'employeePrivateKey'>;
 /**
  * The sub-collections of a store document.
  */
-export enum SUB_COLLECTIONS {
-    product = 'product',
-    sales = 'sales',
+export const SUB_COLLECTIONS = {
+    products: PRODUCTS_COLLECTION,
+    transactions: TRANSACTIONS_COLLECTION,
 }
