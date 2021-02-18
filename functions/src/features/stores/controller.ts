@@ -6,6 +6,7 @@ import {
     EmployeeFacingStoreData,
     StoreData,
 } from './model';
+import { InternalUser } from '../users/model';
 
 
 /**
@@ -46,8 +47,6 @@ export const createStore_POST = async (request: Request, response: Response) => 
         storeId: storeId,
         storeName: storeName,
         owner,
-        uid,
-        email,
         supportEmail,
         employeePrivateKey,
     };
@@ -98,4 +97,54 @@ export const getStore_GET = async (request: Request, response: Response) => {
 
     // Return the appropriate subset of StoreData
     response.status(200).send(isEmployee ? employeeFacingStoreData : publicFacingStoreData);
+}
+
+/**
+ * Add an employee to a store.
+ * 
+ * @param request.query.employeeEmail 'employeeEmail' parameter as a string
+ */
+export const addEmployeeByEmail_POST = async (request: Request, response: Response) => {
+    // Validate that the parameters exist
+    const employeeEmail = request.query.employeeEmail as string;
+    if (!employeeEmail) {
+        AppUtils.handleMissingFieldError(response, AppUtils.FieldType.parameters);
+    }
+
+    // Get user record for individual being added as an employee
+    const userMayBeNull: InternalUser | null = await admin.auth()
+        .getUserByEmail(employeeEmail)
+        .then((userRecord: admin.auth.UserRecord) => userRecord as InternalUser)
+        .catch(error => {
+            AppUtils.handleMissingRessourceError(response, 'user with email', employeeEmail);
+            return null;
+        });
+    const user = userMayBeNull as InternalUser;
+
+    // Get information about store
+    // Note: based on authorization, we know the store already exists
+    const storeId = request.params.storeId;
+    const storeData = await StoreUtils.getStoreRefById(storeId)
+        .get()
+        .then((doc: admin.firestore.DocumentSnapshot) => (
+            doc.exists ? doc.data() : undefined
+        ))
+        .catch(() => undefined);
+    if (!storeData) {
+        AppUtils.handleGeneralError(response);
+    }
+    const { employeePrivateKey } = storeData as StoreData;
+
+    // Handle error when user exists, but is already an employee of the store
+    const discoveredPrivateKey = user.customClaims.isEmployee?.[storeId];
+    if (discoveredPrivateKey === employeePrivateKey) {
+        const message = `The user with email ${employeeEmail} is already an employee of ${storeId}.`;
+        response.status(409).send(message);
+    }
+
+    // Add user as employee
+    const { uid, customClaims: { isEmployee } } = user;
+    await StoreUtils.addEmployee(uid, isEmployee || {}, storeId, employeePrivateKey);
+
+    response.status(200).end();
 }

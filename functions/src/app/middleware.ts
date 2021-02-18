@@ -54,10 +54,10 @@ const isAuthorizedPassThrough = (request: any, response: Response, next: any) =>
     next();
 }
 
-const isAuthorizedEmployee = (request: Request, response: Response, next: any) => {
+const isAuthorizedEmployee = async (request: Request, response: Response, next: any): Promise<void> => {
     const storeId: StoreModels.StoreId = request.params.storeId || '';
     const { email, isEmployee } = { isEmployee: {}, ...Utils.getUserInfoFromResponse(response) };
-    StoreUtils.getStoreRefById(storeId)
+    return StoreUtils.getStoreRefById(storeId)
         .get()
         .then((store: DocumentSnapshot) => {
             functions.logger.info(store.data(), { structuredData: true });
@@ -66,6 +66,7 @@ const isAuthorizedEmployee = (request: Request, response: Response, next: any) =
                 functions.logger.info(
                     `${request.method} request ${request.url}: The user with email ${email} is an employee of ${storeId}.`
                 );
+                next();
             } else {
                 functions.logger.info(
                     `${request.method} request ${request.url}: The user with email ${email} is not an employee of ${storeId}.`
@@ -76,5 +77,4 @@ const isAuthorizedEmployee = (request: Request, response: Response, next: any) =
         .catch(error => {
             Utils.handleGeneralError(response, error);
         });
-    next();
 };
