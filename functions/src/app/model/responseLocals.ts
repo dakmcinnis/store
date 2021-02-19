@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
-import { CustomClaims } from '../features/users/model';
+import { CustomClaims } from '../../features/users/model';
+import { PathIncludingDocumentId } from './path';
 
 /**
  * The structure of how we populate response.locals (provided by Express).
@@ -33,11 +34,3 @@ export interface UserInfo extends CustomClaims {
     email: string;
     displayName: string;
 }
-
-/**
- * A full path from the root to the document in Firestore.
- * 
- * For example, if a document with id `b` is found at `collection 'upper' > document 'a' > collection 'lower'`,
- * then its full path will be `upper/a/lower/b`.
- */
-export type PathIncludingDocumentId = string;

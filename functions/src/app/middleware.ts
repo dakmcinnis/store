@@ -5,7 +5,7 @@ import * as Utils from './utils';
 import * as StoreUtils from '../features/stores/utils';
 import * as StoreModels from '../features/stores/model';
 import { DocumentSnapshot } from 'firebase-functions/lib/providers/firestore';
-import { PathIncludingDocumentId } from './model';
+import { Path } from './model';
 
 /**
  * Logs the request method and url to the firebase-functions.
@@ -80,94 +80,55 @@ const isAuthorizedEmployee = async (request: Request, response: Response, next: 
 };
 
 /**
- * Verifies that a particular document does exist.
- * If it does not exist, the request will not proceed.
+ * Verifies whether documents along a path exist or not.
+ * The expected result for each document is determined
+ * by their 'shouldExist' property.
  * 
- * Pre-condition: This middleware is used for a request with a URL parameter
- * that is equal to the documentId.
+ * Pre-condition: This middleware is used for a request with URL parameters
+ * whose values are the document Ids.
  *  
- * @param collectionPath - The path from the root-level to the collection potentially containing the document
- *  - Ex: If the document is found at  "collection 'upper' > document 'a' > collection 'lower'",
- *    then colloectionPath would be "upper/a/lower".
- * @param documentIdParamName - The URL parameter name which provides the documentId as a value
- *  - Ex: If the request URL contained a parameter called "documentId",
- *    then this string should be "documentId".
+ * @param path - A path of documents, ordered by increase depth in Firestore
  */
-export const isExistingDocument = (
-    collectionPath: string,
-    documentIdParamName: string,
+export const verifyDocumentPath = (
+    path: Path
 ) => (
-    existingDocument(collectionPath, documentIdParamName, true)
-)
-
-/**
- * Verifies that a particular document does not exist.
- * If it does exist, the request will not proceed.
- * 
- * Pre-condition: This middleware is used for a request with a URL parameter
- * that is equal to the documentId.
- *  
- * @param collectionPath - The path from the root-level to the collection potentially containing the document
- *  - Ex: If the document is found at  "collection 'upper' > document 'a' > collection 'lower'",
- *    then colloectionPath would be "upper/a/lower".
- * @param documentIdParamName - The URL parameter name which provides the id of the document as a value
- *  - Ex: If the request URL contained a parameter called "documentId",
- *    then this string should be "documentId".
- */
-export const isNotExistingDocument = (
-    collectionPath: string,
-    documentIdParamName: string,
-) => (
-    existingDocument(collectionPath, documentIdParamName, false)
-)
-
-/**
- * Verifies that a particular document does or does not exist.
- * The expected result is determined by @param shouldExist.
- * This determines whether the request can proceed.
- * 
- * Pre-condition: This middleware is used for a request with a URL parameter
- * that is equal to the documentId.
- *  
- * @param collectionPath - The path from the root-level to the collection containing the document
- *  - Ex: If the document is found at  "collection 'upper' > document 'a' > collection 'lower'",
- *    then colloectionPath would be "upper/a/lower".
- * @param documentIdParamName - The URL parameter name which provides the documentId as a value
- *  - Ex: If the request URL contained a parameter called "documentId",
- *    then this string should be "documentId".
- * @param shouldExist - Whether or not we expect the document to exist
- */
-const existingDocument = (
-    collectionPath: string,
-    documentIdParamName: string,
-    shouldExist: boolean
-) => (
-    async (request: Request, response: Response, next: any): Promise<void> => {
-        // Get data
-        const documentId = request.params[documentIdParamName] || '';
-        const docData: admin.firestore.DocumentData | undefined = await admin.firestore()
-            .collection(collectionPath)
-            .doc(documentId)
-            .get()
-            .then((doc: admin.firestore.DocumentSnapshot) => (
-                doc.exists ? doc.data() : undefined
-            ))
-            .catch(() => undefined);
-        // Determine response
-        const fullPath: PathIncludingDocumentId = `${collectionPath}/${documentId}`;
-        if (shouldExist && !!docData) {
-            Utils.addDocumentDataToResponse(response, fullPath, docData);
-            next();
-        } else if (shouldExist && !docData) {
-            Utils.handleMissingRessourceError(
-                response, `document under '${collectionPath}'`, `with id '${documentId}'`
-            );
-        } else if (!shouldExist && !!docData) {
-            Utils.handleResourceAlreadyExistsError(
-                response, `document id`, `The document with id '${documentId}' under '${collectionPath}'`
-            )
-        } else {
-            next();
+    async (request: Request, response: Response, next: any) => {
+        let fullPath = '';
+        for (let index = 0; index < path.length; index++) {
+            // Setup
+            const item = path[index];
+            const { shouldExist } = item;
+            const collection = item.parentCollection;
+            const documentId = request.params[item.paramName] || '';
+            if (index > 0) {
+                fullPath += '/';
+            }
+            // Document Read
+            fullPath += collection;
+            const collectionPath = fullPath;
+            const docData: admin.firestore.DocumentData | undefined = await admin.firestore()
+                .collection(fullPath)
+                .doc(documentId)
+                .get()
+                .then((doc: admin.firestore.DocumentSnapshot) => (
+                    doc.exists ? doc.data() : undefined
+                ))
+            fullPath += `/${documentId}`;
+            // Handle unexpected behaviour
+            if (shouldExist && !!docData) {
+                Utils.addDocumentDataToResponse(response, fullPath, docData);
+            } else if (shouldExist && !docData) {
+                Utils.handleMissingRessourceError(
+                    response, `document under '${collectionPath}'`, `with id '${documentId}'`
+                );
+                return;
+            } else if (!shouldExist && !!docData) {
+                Utils.handleResourceAlreadyExistsError(
+                    response, `document id`, `The document with id '${documentId}' under '${collectionPath}'`
+                )
+                return;
+            }
         }
+        next();
     }
 );
