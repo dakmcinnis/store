@@ -30,11 +30,16 @@ TODO: COMPLETE
 
 ## Using the system
 
-1) Generate an authentication token, using the UI: https://store-shopify-technical.web.app
-   - Note: Click "Sign Out" before generating a new token.
+1) Setup Postman:
+    - Download the collections file from: https://raw.githubusercontent.com/dakotamcinnis/store/master/Secure%20Store.postman_collection
+    - Import the file into Postman
 
-2) Use endpoints to interact with the system (TODO: COMPLETE)
-    - Authentication: you must provide an `Authorization` header with the value `bearer <sessionToken>`
+2) Each time you begin using the system, you must:
+    - Generate an authentication token using the UI: https://store-shopify-technical.web.app
+       - Note: Click "Sign Out" before generating a new token.
+    - On all requests except for `api/users/signup`, you must provide an `Authorization` header with the value `bearer <sessionToken>`
+
+Note: If you see the result `403: Forbidden` for a request that you should have access to, then your session token is expired. Return to the UI to generate a new one.
 
 ## Extensibility
 
@@ -91,8 +96,13 @@ This middleware includes:
 
 ## Improvements
 
-- Further develop endpoints for managing & purchasing products
-- Allow for employees to view analytics about inventory usage
-  - Add email notifications before inventory runs out
-- Create an administrator employee role and provide transparency over sales & profits
+- Features to develop:
+  - Managing & purchasing products
+  - Analytics of inventory usage for employees
+    - Option to opt-in to email notifications before inventory runs out
+  - Create adminstrator role for full transparency of sales & profits over time
+- Things to consider: Firebase does not allow you write WebSockets. Instead, it provides dynamic updates out-of-the-box, if clients access Firestore directly. To enable this functionality, we must:
+    - Begin modifying `firestore.rules` to allow access to certain parts of the database based on user roles (ex: employee or owner)
+    - Document clearly and remain consistent with what operations should be done from endpoints and what should be done directly with Firestore.
+    - Migrate as much logic as possible to triggers, so that they cover modifications from endpoints, the Firebase console and the client.
   
