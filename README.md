@@ -3,9 +3,9 @@
 > A demo of an online Store Model for Shopify's Summer 2021 Backend Developer Internship
 
 Small businesses are always looking for an extra hand. They may not know how to spin up a website, keep track of their sales and profits over time or manage their inventory. To meet their needs, Secure Store has 3 key features:
-1) Autonomy over stores, with a distinct separation from other businesses to empower them to build their brand
-2) Simple configurations of stores, employees, responsibilities and products
-3) A commitment to the security and efficiency of requests, so businesses can focus on their mission
+1) Autonomy over stores - with a distinct separation from other stores, businesses are empowered to build their brand.
+2) Simple and rapid configurations - for stores, employees, responsibilities and products.
+3) Commitment to security and efficiency of requests - so businesses can focus on their mission!
 
 
 ## Overview
@@ -21,7 +21,7 @@ Small businesses are always looking for an extra hand. They may not know how to 
 
 #### Notes
 
-This system has been designed early with a prioritization on robustness, extensibility and authorization handling. The current features accessible to users are bare bones.
+This system has been designed early-on with a prioritization on robustness, extensibility and authorization handling. However, the current features accessible to users are bare bones.
 
 
 ## Existing Users
