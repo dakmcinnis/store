@@ -1,3 +1,4 @@
+import * as admin from 'firebase-admin';
 import { PRODUCTS_COLLECTION } from './products/model';
 import { TRANSACTIONS_COLLECTION } from './transactions/model';
 
@@ -24,7 +25,7 @@ export type EmployeePrivateKey = string;
 /**
  * The fields on a store's document.
  */
-export interface StoreData extends FirebaseFirestore.DocumentData {
+export interface StoreData extends admin.firestore.DocumentData {
     storeId: StoreId;
     storeName: StoreName;
     owner: {
