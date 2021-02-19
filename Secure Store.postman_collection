@@ -1,0 +1,466 @@
+{
+	"info": {
+		"_postman_id": "e18db45a-4720-4790-9e8d-d529bfced980",
+		"name": "Store - Shopify Technical Interview",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api/users",
+			"item": [
+				{
+					"name": "/signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/users/signup?email=quynh@gmail.com&password=password&displayName=Quynh",
+							"protocol": "https",
+							"host": [
+								"us-central1-store-shopify-technical",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"users",
+								"signup"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "quynh@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								},
+								{
+									"key": "displayName",
+									"value": "Quynh"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/get (personal user only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjYxMDgzMDRiYWRmNDc1MWIyMWUwNDQwNTQyMDZhNDFkOGZmMWNiYTgiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUXV5bmgiLCJpc0VtcGxveWVlIjp7IkRha1N0b3JlMSI6Ill6dWxUZHNhNGdMdldMVEp0eHBSMGNVR1hVVHh2cWFyV01kcUliIiwiUXV5bmhPd25lclN0b3JlIjoiaWJVNEs4akx3ampYcFNTSXAzWDNtdHdnbGJveHVVdTY4VkNQY3lxIn0sImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9zdG9yZS1zaG9waWZ5LXRlY2huaWNhbCIsImF1ZCI6InN0b3JlLXNob3BpZnktdGVjaG5pY2FsIiwiYXV0aF90aW1lIjoxNjEzNzAzNDQ4LCJ1c2VyX2lkIjoiS2YwTGdYQkk2ek5NbGJ2YU9LZnFVVmtEZFRzMSIsInN1YiI6IktmMExnWEJJNnpOTWxidmFPS2ZxVVZrRGRUczEiLCJpYXQiOjE2MTM3MDM0NDgsImV4cCI6MTYxMzcwNzA0OCwiZW1haWwiOiJxdXluaEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicXV5bmhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.XRclgKDP1S0JlwJrq7M18eQDlSLQsqQGQPCrtAnDs7F4ZpbX18uJQHjta8OizbPjNondiW3zRWpGEOHt9EcasKiHGx60zduTGfPPGr3Rlc91jshDiBM-wqWN_NLNhgGcZpcrWQHTxzstK4ewc09tt6Kw08ceyA9mBzKBhDUotqypNwOPPYpPMZcgoIHal9N8LSUBL68V9tHgKHT3F9xm4S_UXuT2IIrIObF3sZ7Ka1o93uZoEhF2JIrG4Y7HTN6z-n3QNusE0BCkCbIEo3oWpBlNDNQetcuBTgYJQ4q2dW1pfQJONvEIKcO57C5yY5UONT0utT1i8vV2zgXyhARiiw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/users/get?debug=true",
+							"protocol": "https",
+							"host": [
+								"us-central1-store-shopify-technical",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"users",
+								"get"
+							],
+							"query": [
+								{
+									"key": "debug",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api/stores",
+			"item": [
+				{
+					"name": "stores/products",
+					"item": [
+						{
+							"name": "/:storeId/products/:productId/create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjYxMDgzMDRiYWRmNDc1MWIyMWUwNDQwNTQyMDZhNDFkOGZmMWNiYTgiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUXV5bmgiLCJpc0VtcGxveWVlIjp7IkRha1N0b3JlMSI6Ill6dWxUZHNhNGdMdldMVEp0eHBSMGNVR1hVVHh2cWFyV01kcUliIiwiUXV5bmhPd25lclN0b3JlIjoiaWJVNEs4akx3ampYcFNTSXAzWDNtdHdnbGJveHVVdTY4VkNQY3lxIn0sImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9zdG9yZS1zaG9waWZ5LXRlY2huaWNhbCIsImF1ZCI6InN0b3JlLXNob3BpZnktdGVjaG5pY2FsIiwiYXV0aF90aW1lIjoxNjEzNzAzNDQ4LCJ1c2VyX2lkIjoiS2YwTGdYQkk2ek5NbGJ2YU9LZnFVVmtEZFRzMSIsInN1YiI6IktmMExnWEJJNnpOTWxidmFPS2ZxVVZrRGRUczEiLCJpYXQiOjE2MTM3MDM0NDgsImV4cCI6MTYxMzcwNzA0OCwiZW1haWwiOiJxdXluaEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicXV5bmhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.XRclgKDP1S0JlwJrq7M18eQDlSLQsqQGQPCrtAnDs7F4ZpbX18uJQHjta8OizbPjNondiW3zRWpGEOHt9EcasKiHGx60zduTGfPPGr3Rlc91jshDiBM-wqWN_NLNhgGcZpcrWQHTxzstK4ewc09tt6Kw08ceyA9mBzKBhDUotqypNwOPPYpPMZcgoIHal9N8LSUBL68V9tHgKHT3F9xm4S_UXuT2IIrIObF3sZ7Ka1o93uZoEhF2JIrG4Y7HTN6z-n3QNusE0BCkCbIEo3oWpBlNDNQetcuBTgYJQ4q2dW1pfQJONvEIKcO57C5yY5UONT0utT1i8vV2zgXyhARiiw",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/stores/:storeId/products/:productId/create?name=&productionCost=&retailPrice=&deliveryFee=&inventory=",
+									"protocol": "https",
+									"host": [
+										"us-central1-store-shopify-technical",
+										"cloudfunctions",
+										"net"
+									],
+									"path": [
+										"api",
+										"stores",
+										":storeId",
+										"products",
+										":productId",
+										"create"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": ""
+										},
+										{
+											"key": "productionCost",
+											"value": "",
+											"description": "Ex: 3.01"
+										},
+										{
+											"key": "retailPrice",
+											"value": "",
+											"description": "Ex: 12.99"
+										},
+										{
+											"key": "deliveryFee",
+											"value": "",
+											"description": "Ex: 5.00"
+										},
+										{
+											"key": "inventory",
+											"value": "",
+											"description": "Ex: 5"
+										}
+									],
+									"variable": [
+										{
+											"key": "storeId",
+											"value": ""
+										},
+										{
+											"key": "productId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TODO: /:storeId/products/:productId/update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/stores/:storeId/products/:productId/update?name=&productionCost=&retailPrice=&deliveryFee=&inventory=",
+									"protocol": "https",
+									"host": [
+										"us-central1-store-shopify-technical",
+										"cloudfunctions",
+										"net"
+									],
+									"path": [
+										"api",
+										"stores",
+										":storeId",
+										"products",
+										":productId",
+										"update"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": ""
+										},
+										{
+											"key": "productionCost",
+											"value": ""
+										},
+										{
+											"key": "retailPrice",
+											"value": ""
+										},
+										{
+											"key": "deliveryFee",
+											"value": ""
+										},
+										{
+											"key": "inventory",
+											"value": ""
+										}
+									],
+									"variable": [
+										{
+											"key": "storeId",
+											"value": ""
+										},
+										{
+											"key": "productId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TODO: /:storeId/products/:productId/addToCart",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/stores/:storeId/products/:productId/addToCart",
+									"protocol": "https",
+									"host": [
+										"us-central1-store-shopify-technical",
+										"cloudfunctions",
+										"net"
+									],
+									"path": [
+										"api",
+										"stores",
+										":storeId",
+										"products",
+										":productId",
+										"addToCart"
+									],
+									"variable": [
+										{
+											"key": "storeId",
+											"value": ""
+										},
+										{
+											"key": "productId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TODO: /:storeId/products/:productId/removeFromCart",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/stores/:storeId/products/:productId/removeFromCart",
+									"protocol": "https",
+									"host": [
+										"us-central1-store-shopify-technical",
+										"cloudfunctions",
+										"net"
+									],
+									"path": [
+										"api",
+										"stores",
+										":storeId",
+										"products",
+										":productId",
+										"removeFromCart"
+									],
+									"variable": [
+										{
+											"key": "storeId",
+											"value": ""
+										},
+										{
+											"key": "productId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TODO: /:storeId/products/viewCart",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "stores/transactions",
+					"item": [
+						{
+							"name": "TODO: /:storeId/transactions/averageSellingRate",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/stores/:storeId/products/:productId/purchase?productId",
+									"protocol": "https",
+									"host": [
+										"us-central1-store-shopify-technical",
+										"cloudfunctions",
+										"net"
+									],
+									"path": [
+										"api",
+										"stores",
+										":storeId",
+										"products",
+										":productId",
+										"purchase"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": null
+										}
+									],
+									"variable": [
+										{
+											"key": "storeId",
+											"value": ""
+										},
+										{
+											"key": "productId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/:storeId/get",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjYxMDgzMDRiYWRmNDc1MWIyMWUwNDQwNTQyMDZhNDFkOGZmMWNiYTgiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUXV5bmgiLCJpc0VtcGxveWVlIjp7IkRha1N0b3JlMSI6Ill6dWxUZHNhNGdMdldMVEp0eHBSMGNVR1hVVHh2cWFyV01kcUliIiwiUXV5bmhPd25lclN0b3JlIjoiaWJVNEs4akx3ampYcFNTSXAzWDNtdHdnbGJveHVVdTY4VkNQY3lxIn0sImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9zdG9yZS1zaG9waWZ5LXRlY2huaWNhbCIsImF1ZCI6InN0b3JlLXNob3BpZnktdGVjaG5pY2FsIiwiYXV0aF90aW1lIjoxNjEzNzAzNDQ4LCJ1c2VyX2lkIjoiS2YwTGdYQkk2ek5NbGJ2YU9LZnFVVmtEZFRzMSIsInN1YiI6IktmMExnWEJJNnpOTWxidmFPS2ZxVVZrRGRUczEiLCJpYXQiOjE2MTM3MDM0NDgsImV4cCI6MTYxMzcwNzA0OCwiZW1haWwiOiJxdXluaEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicXV5bmhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.XRclgKDP1S0JlwJrq7M18eQDlSLQsqQGQPCrtAnDs7F4ZpbX18uJQHjta8OizbPjNondiW3zRWpGEOHt9EcasKiHGx60zduTGfPPGr3Rlc91jshDiBM-wqWN_NLNhgGcZpcrWQHTxzstK4ewc09tt6Kw08ceyA9mBzKBhDUotqypNwOPPYpPMZcgoIHal9N8LSUBL68V9tHgKHT3F9xm4S_UXuT2IIrIObF3sZ7Ka1o93uZoEhF2JIrG4Y7HTN6z-n3QNusE0BCkCbIEo3oWpBlNDNQetcuBTgYJQ4q2dW1pfQJONvEIKcO57C5yY5UONT0utT1i8vV2zgXyhARiiw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/stores/:storeId/get",
+							"protocol": "https",
+							"host": [
+								"us-central1-store-shopify-technical",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"stores",
+								":storeId",
+								"get"
+							],
+							"variable": [
+								{
+									"key": "storeId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/:storeId/create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjYxMDgzMDRiYWRmNDc1MWIyMWUwNDQwNTQyMDZhNDFkOGZmMWNiYTgiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUXV5bmgiLCJpc0VtcGxveWVlIjp7IkRha1N0b3JlMSI6Ill6dWxUZHNhNGdMdldMVEp0eHBSMGNVR1hVVHh2cWFyV01kcUliIiwiUXV5bmhPd25lclN0b3JlIjoiaWJVNEs4akx3ampYcFNTSXAzWDNtdHdnbGJveHVVdTY4VkNQY3lxIn0sImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9zdG9yZS1zaG9waWZ5LXRlY2huaWNhbCIsImF1ZCI6InN0b3JlLXNob3BpZnktdGVjaG5pY2FsIiwiYXV0aF90aW1lIjoxNjEzNzAzNDQ4LCJ1c2VyX2lkIjoiS2YwTGdYQkk2ek5NbGJ2YU9LZnFVVmtEZFRzMSIsInN1YiI6IktmMExnWEJJNnpOTWxidmFPS2ZxVVZrRGRUczEiLCJpYXQiOjE2MTM3MDM0NDgsImV4cCI6MTYxMzcwNzA0OCwiZW1haWwiOiJxdXluaEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicXV5bmhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.XRclgKDP1S0JlwJrq7M18eQDlSLQsqQGQPCrtAnDs7F4ZpbX18uJQHjta8OizbPjNondiW3zRWpGEOHt9EcasKiHGx60zduTGfPPGr3Rlc91jshDiBM-wqWN_NLNhgGcZpcrWQHTxzstK4ewc09tt6Kw08ceyA9mBzKBhDUotqypNwOPPYpPMZcgoIHal9N8LSUBL68V9tHgKHT3F9xm4S_UXuT2IIrIObF3sZ7Ka1o93uZoEhF2JIrG4Y7HTN6z-n3QNusE0BCkCbIEo3oWpBlNDNQetcuBTgYJQ4q2dW1pfQJONvEIKcO57C5yY5UONT0utT1i8vV2zgXyhARiiw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/stores/:storeId/create?storeName=quynh's Store 2&supportEmail=support@quynh.com",
+							"protocol": "https",
+							"host": [
+								"us-central1-store-shopify-technical",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"stores",
+								":storeId",
+								"create"
+							],
+							"query": [
+								{
+									"key": "storeName",
+									"value": "quynh's Store 2"
+								},
+								{
+									"key": "supportEmail",
+									"value": "support@quynh.com"
+								}
+							],
+							"variable": [
+								{
+									"key": "storeId",
+									"value": "Abc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/:storeId/addEmployee",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjYxMDgzMDRiYWRmNDc1MWIyMWUwNDQwNTQyMDZhNDFkOGZmMWNiYTgiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUXV5bmgiLCJpc0VtcGxveWVlIjp7IkRha1N0b3JlMSI6Ill6dWxUZHNhNGdMdldMVEp0eHBSMGNVR1hVVHh2cWFyV01kcUliIn0sImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9zdG9yZS1zaG9waWZ5LXRlY2huaWNhbCIsImF1ZCI6InN0b3JlLXNob3BpZnktdGVjaG5pY2FsIiwiYXV0aF90aW1lIjoxNjEzNjk3NDI0LCJ1c2VyX2lkIjoiS2YwTGdYQkk2ek5NbGJ2YU9LZnFVVmtEZFRzMSIsInN1YiI6IktmMExnWEJJNnpOTWxidmFPS2ZxVVZrRGRUczEiLCJpYXQiOjE2MTM2OTc0MjQsImV4cCI6MTYxMzcwMTAyNCwiZW1haWwiOiJxdXluaEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicXV5bmhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.XESWLH24oq4A52-jijR5i1pQ3BBle-LOXkInpPWjMamCiI7XQL0Dmz-y9orYvtvPrPkYTV8_ggMnbiuVmiWqt6Zad9HDOe9t6FD6_AiqcrqtFP-5IrL6Oqg2PrmphEvZ_kZZrHS10t42O5TCguLs88TWtK2HG0mA_klx7f2q8Lc7xdTgZKmrJqvS5pNlgF-NvwAxvvTXzkvgNQK17mREX1B8jrqorjVM2Rtypc_3zfETtCKeVheghdrEr90kljfpKCo8GkkF-gUp0yVgNfeZhww5rzJIXwN7xH6XdbAQHr4EtNwemYeIdhpa2nEb1Hmit1Up5w0Ft3WORnp9r5yC3Q",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://us-central1-store-shopify-technical.cloudfunctions.net/api/stores/:storeId/addEmployee?employeeEmail=mike@gmail.com",
+							"protocol": "https",
+							"host": [
+								"us-central1-store-shopify-technical",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"api",
+								"stores",
+								":storeId",
+								"addEmployee"
+							],
+							"query": [
+								{
+									"key": "employeeEmail",
+									"value": "mike@gmail.com"
+								}
+							],
+							"variable": [
+								{
+									"key": "storeId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
