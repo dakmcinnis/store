@@ -71,7 +71,7 @@ const LoginScreen = () => {
         <Wrapper>
             <div>
                 <Text fontColor={Color.NEUTRAL.BLACK} size="HB_DISPLAY_2">Welcome to</Text>
-                <Text fontColor={Color.NEUTRAL.BLACK} size="HB_DISPLAY_2">Store-ify!</Text>
+                <Text fontColor={Color.NEUTRAL.BLACK} size="HB_DISPLAY_2">Secure Store!</Text>
             </div>
             <TextInput
                 placeholder="Email"
