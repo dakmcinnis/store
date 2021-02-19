@@ -14,3 +14,5 @@ export interface ProductData extends FirebaseFirestore.DocumentData {
     deliveryFee: number; // float
     inventory?: number; // integer
 }
+
+export type PublicFacingProductData = Omit<ProductData, 'productionCost'>;

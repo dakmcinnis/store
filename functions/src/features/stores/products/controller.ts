@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import * as AppUtils from '../../../app/utils';
+import { StoreData, STORES_COLLECTION } from '../model';
 import * as StoreUtils from '../utils';
-import { ProductData } from './model';
+import { ProductData, PRODUCTS_COLLECTION, PublicFacingProductData } from './model';
 import * as ProductUtils from './utils';
 
 /**
@@ -56,13 +57,7 @@ export const createProduct_POST = async (request: Request, response: Response) =
         response.status(400).send("The parameter 'name' must be provided.");
     }
 
-    // Validate that the product does not exist
-    const docExists = await ProductUtils.getProductRefById(storeId, productId).get().then((doc) => doc.exists).catch(() => false);
-    if (docExists) {
-        AppUtils.handleResourceAlreadyExistsError(response, 'product id', productId);
-    }
-
-    // Since it does not exist, create the product
+    // Ccreate the product
     const productData: ProductData = {
         id: productId,
         name,
@@ -79,4 +74,32 @@ export const createProduct_POST = async (request: Request, response: Response) =
         });
 
     response.status(200).end();
+};
+
+/**
+ * Get a particular product within a store.
+ */
+export const getProductById_GET = async (request: Request, response: Response) => {
+    // Get parameters
+    const storeId = request.params.storeId;
+    const productId = request.params.productId;
+
+    // Get document data
+    const fullPath = `${STORES_COLLECTION}/${storeId}/${PRODUCTS_COLLECTION}/${productId}`;
+    const productData = AppUtils.getDocumentDataFromResponse(response, fullPath) as ProductData;
+
+    // Determine if user is an employee
+    const storePath = `${STORES_COLLECTION}/${storeId}`;
+    const storeData = AppUtils.getDocumentDataFromResponse(response, storePath) as StoreData;
+    const { employeePrivateKey } = storeData;
+    const { isEmployee: isEmployeeData } = AppUtils.getUserInfoFromResponse(response);
+    const isEmployee: boolean = isEmployeeData?.[storeId] === employeePrivateKey;
+
+    // Return the appropriate subset of StoreData
+    const { productionCost, ...publicFacingProductData } = productData;
+    const data: ProductData | PublicFacingProductData = (
+        isEmployee ? productData : publicFacingProductData
+    );
+
+    response.status(200).send(data);
 };

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
+import { UserRecord } from 'firebase-functions/lib/providers/auth';
 import { ResponseLocals, ResponseLocalsAuthenticated, UserInfo } from '../model';
 
 
@@ -31,12 +32,16 @@ export const getAuthorizationToken = (request: Request): string => {
  * @param response - The object used to send a response
  * @param decodedToken - Contains UserInfo, which is retrieved after validating that someone isAuthenticated
  */
-export const addUserInfoToResponse = (response: Response, decodedToken: admin.auth.DecodedIdToken): void => {
+export const addUserInfoToResponse = async (response: Response, decodedToken: admin.auth.DecodedIdToken): Promise<void> => {
+    const isEmployee = await admin.auth()
+        .getUserByEmail(decodedToken.email as string)
+        .then((user: UserRecord) => user.customClaims?.isEmployee || {})
+        .catch(() => ({}));
     const userInfo: UserInfo = {
         uid: decodedToken.uid,
         email: decodedToken.email as string,
         displayName: decodedToken.displayName,
-        isEmployee: decodedToken.isEmployee,
+        isEmployee,
     };
     const newLocals: ResponseLocals = {
         ...(response.locals as ResponseLocals),

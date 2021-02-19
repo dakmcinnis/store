@@ -27,9 +27,46 @@ For the interview: [Google Slides](https://docs.google.com/presentation/d/1MKPUT
 This system has been designed early-on with a prioritization on robustness, extensibility and authorization handling. However, the current features accessible to users are bare bones.
 
 
-## Existing Users
+## Existing Stores
 
-TODO: COMPLETE
+#### Skin Saviours
+
+**Store Id** skin-saviours
+
+**Users**
+
+| Email                   | Password | 
+|-------------------------|----------|
+| owner@skinsaviours.com     | password |
+| employee1@skinsaviours.com    | password |
+| employee2@skinsaviours.com    | password |
+
+Note: There is no requirement for emails of an organization to use the same domain name.
+
+**Products**
+
+| Product ID                  | Product Name | 
+|-------------------------|----------|
+| mask-1    | Homemade Face Mask |
+| face-cream-1   | The True Cream Moisturizing Bomb |
+| serum-1    | Vitamin-C Serum |
+
+#### Shoppers (Unaffiliated Accounts)
+
+| Email                   | Password | 
+|-------------------------|----------|
+| dakota@gmail.com     | password |
+| quynh@gmail.com    | password |
+| hana@gmail.com    | password |
+
+## Building Your Own Data
+
+You will need to:
+
+1) Create a user
+2) Create a store (under the account of the owner)
+3) Create users for employees, then call the addEmployee endpoint as the owner / an employee
+4) Create product(s) (under the accuont of the owner / an employee)
 
 ## Using the system
 
@@ -99,6 +136,7 @@ This middleware includes:
 
 ## Improvements
 
+- Change signup endpoint to not pass credentials as parameters
 - Features to develop:
   - Managing & purchasing products
   - Analytics of inventory usage for employees

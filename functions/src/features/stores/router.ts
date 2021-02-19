@@ -80,4 +80,10 @@ router.post(
     ProductsController.createProduct_POST
 );
 
+router.get(
+    '/:storeId/products/:productId/get',
+    Middleware.verifyDocumentPath([DOC.store.exist, DOC.product.exist]),
+    ProductsController.getProductById_GET
+);
+
 export default router;

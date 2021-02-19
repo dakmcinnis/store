@@ -68,7 +68,7 @@ export const getStore_GET = async (
     request: Request, response: Response
 ) => {
     // Get information about authenticated user
-    const { email } = AppUtils.getUserInfoFromResponse(response);
+    const { isEmployee: isEmployeeData } = AppUtils.getUserInfoFromResponse(response);
 
     // Get information about store
     const storeId = request.params.storeId;
@@ -77,13 +77,7 @@ export const getStore_GET = async (
     const { owner, ...publicFacingStoreData } = employeeFacingStoreData as EmployeeFacingStoreData;
 
     // Determine if user is an employee
-    const isEmployee: boolean = await admin.auth()
-        .getUserByEmail(email)
-        .then((user: admin.auth.UserRecord) => {
-            const foundKey = (user.customClaims?.isEmployee[storeId] || '') as string;
-            return foundKey === employeePrivateKey;
-        })
-        .catch(() => false);
+    const isEmployee: boolean = isEmployeeData?.[storeId] === employeePrivateKey;
 
     // Return the appropriate subset of StoreData
     const data: EmployeeFacingStoreData | PublicFacingStoreData = (

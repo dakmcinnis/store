@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as admin from 'firebase-admin';
+import { UserRecord } from 'firebase-functions/lib/providers/auth';
 import * as AppUtils from '../../app/utils';
 import { StoreId } from '../stores/model';
 import { InternalUser, PublicFacingUser } from './model';
@@ -11,13 +12,25 @@ import { InternalUser, PublicFacingUser } from './model';
  * @param request.query.password 'password' parameter as a string
  * @param request.query.displayName 'displayName' parameter as a string
  */
-export const signup_POST = (request: Request, response: Response) => {
+export const signup_POST = async (request: Request, response: Response) => {
+    // Validate parameters
     const email = request.query.email as string;
     const password = request.query.password as string;
     const displayName = request.query.displayName as string;
     if (!email || !password || !displayName) {
         AppUtils.handleMissingFieldError(response, AppUtils.FieldType.parameters);
     }
+
+    // Verify that user does not exist
+    const userExists = await admin.auth().getUserByEmail(email)
+        .then((user: UserRecord) => !!user)
+        .catch(() => false);
+    if (userExists) {
+        AppUtils.handleResourceAlreadyExistsError(response, 'user email', `The email ${email}`);
+        return;
+    }
+
+    // Create user
     return admin.auth().createUser({
         email,
         password,

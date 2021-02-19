@@ -26,8 +26,8 @@ export const logging = (request: Request, response: Response, next: any) => {
 export const isAuthenticated = (request: Request, response: Response, next: any) => {
     const token = Utils.getAuthorizationToken(request);
     if (token) {
-        admin.auth().verifyIdToken(token).then((decodedToken: admin.auth.DecodedIdToken) => {
-            Utils.addUserInfoToResponse(response, decodedToken);
+        admin.auth().verifyIdToken(token).then(async (decodedToken: admin.auth.DecodedIdToken) => {
+            await Utils.addUserInfoToResponse(response, decodedToken);
             functions.logger.info(
                 `${request.method} request ${request.url}: The user with email ${decodedToken.email} is authenticated.`
             );
