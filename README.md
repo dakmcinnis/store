@@ -7,8 +7,11 @@ Small businesses are always looking for an extra hand. They may not know how to 
 2) Simple and rapid configurations - for stores, employees, responsibilities and products.
 3) Commitment to security and efficiency of requests - so businesses can focus on their mission!
 
-
 ## Overview
+
+#### Slide Deck
+
+For the interview: [Google Slides](https://docs.google.com/presentation/d/1MKPUTCoQRhOYkX4B3fNCUvtib3Ygy8jGQGlSZjeouoY/edit?usp=sharing)
 
 #### Decription
 
@@ -31,8 +34,8 @@ TODO: COMPLETE
 ## Using the system
 
 1) Setup Postman:
-    - Download the collections file from: https://raw.githubusercontent.com/dakotamcinnis/store/master/Secure%20Store.postman_collection
-    - Import the file into Postman
+    - Download the [collection file](https://raw.githubusercontent.com/dakotamcinnis/store/master/Secure%20Store.postman_collection)
+    - Import the collection into Postman
 
 2) Each time you begin using the system, you must:
     - Generate an authentication token using the UI: https://store-shopify-technical.web.app
